@@ -12,7 +12,7 @@ if(!($bits -match "^(32|64)$")){
   throw "'bits' variable incorrectly set to [$bits]. Hint: '32' or '64' value is expected."
 }
 
-$qtBuildScriptVersion = '6f59ca17b3bcc6b56fa636522dab6a862be0c856'
+$qtBuildScriptVersion = '2fdd4a869d4b82323b37efc543871d7ff17bb858'
 
 if (![System.IO.Directory]::Exists($destDir)) {[System.IO.Directory]::CreateDirectory($destDir)}
 
@@ -53,10 +53,6 @@ $jomArchiveUrl = 'http://download.qt.io/official_releases/jom/' + $jomArchiveNam
 $jomArchiveFile = Join-Path $destDir $jomArchiveName
 Download-File $jomArchiveUrl $jomArchiveFile
 
-# if first attempt failed, try again from a different server
-$jomArchiveUrl = 'http://master.qt.io/official_releases/jom/' + $jomArchiveName
-Download-File $jomArchiveUrl $jomArchiveFile
-
 # extract jom package
 if (![System.IO.Directory]::Exists($jomInstallDir)) {
   Write-Host "Extracting $jomArchiveFile to $jomInstallDir..."
@@ -66,10 +62,10 @@ $jom = Join-Path $jomInstallDir 'jom.exe'
 
 # download CMake
 Write-Host "Download CMake commandline tool"
-$cmakeBaseName = 'cmake-2.8.12.1-win32-x86'
+$cmakeBaseName = 'cmake-3.4.3-win32-x86'
 $cmakeArchiveName = $cmakeBaseName + '.zip'
 $cmakeInstallDir = Join-Path $destDir $cmakeBaseName
-$cmakeArchiveUrl = 'http://www.cmake.org/files/v2.8/' + $cmakeArchiveName
+$cmakeArchiveUrl = 'http://www.cmake.org/files/v3.4/' + $cmakeArchiveName
 $cmakeArchiveFile = Join-Path $destDir $cmakeArchiveName
 Download-File $cmakeArchiveUrl $cmakeArchiveFile
 
@@ -81,10 +77,10 @@ if (![System.IO.Directory]::Exists($cmakeInstallDir)) {
 $cmake = Join-Path $cmakeInstallDir 'bin\cmake.exe'
 
 # download cross-platform build script
- $qtBuildScriptName = 'build_qt_with_openssl.cmake'
- $qtBuildScriptFile = Join-Path $destDir $qtBuildScriptName
- $url = ('https://raw.githubusercontent.com/jcfr/qt-easy-build/' + $qtBuildScriptVersion + '/cmake/' + $qtBuildScriptName)
-# Always-Download-File $url $qtBuildScriptFile
+$qtBuildScriptName = 'build_qt_with_openssl.cmake'
+$qtBuildScriptFile = Join-Path $destDir $qtBuildScriptName
+$url = ('https://raw.githubusercontent.com/jcfr/qt-easy-build/' + $qtBuildScriptVersion + '/cmake/' + $qtBuildScriptName)
+Download-File $url $qtBuildScriptFile
 
 # download cross-platform helper script(s)
 $scriptName = 'QEBGetOpenSSLBinariesDownloadURL.cmake'
