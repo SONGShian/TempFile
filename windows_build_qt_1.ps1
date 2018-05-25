@@ -50,7 +50,7 @@ param (
   [string]$file
   )
   if (![System.IO.File]::Exists($file)) {
-    Download-File $url $file
+    Always-Download-File $url $file
   }
 }
 
